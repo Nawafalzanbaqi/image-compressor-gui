@@ -1,4 +1,6 @@
+import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { isRouteEnabled } from "@/config/nav";
 import { SearchBox } from "@/features/search/components/search-box";
 import { SearchResults } from "@/features/search/components/search-results";
 
@@ -12,6 +14,7 @@ export default async function SearchPage({
   const { locale } = await params;
   const { q = "" } = await searchParams;
   setRequestLocale(locale);
+  if (!isRouteEnabled("search")) notFound();
   const t = await getTranslations("search");
 
   return (

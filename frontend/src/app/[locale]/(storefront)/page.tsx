@@ -1,8 +1,10 @@
 import dynamic from "next/dynamic";
 import { setRequestLocale } from "next-intl/server";
+import { options } from "@/config/options";
 import { Hero } from "@/features/hero/components/hero";
 import { CategoryGrid } from "@/features/categories/components/category-grid";
 import { FeaturedProducts } from "@/features/products/components/featured-products";
+import { RestaurantHome } from "@/features/restaurant-home/components/restaurant-home";
 
 // Below-the-fold banners are lazy-loaded (perf).
 const Banners = dynamic(() =>
@@ -16,6 +18,11 @@ export default async function HomePage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+
+  // Config-driven vertical: the same route renders the active siteType's landing.
+  if (options.siteType === "restaurant") {
+    return <RestaurantHome locale={locale} />;
+  }
 
   return (
     <>

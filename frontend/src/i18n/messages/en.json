@@ -28,7 +28,12 @@
     "cart": "Cart",
     "search": "Search",
     "dashboard": "My Account",
-    "reviews": "Reviews"
+    "reviews": "Reviews",
+    "menu": "Menu",
+    "reserve": "Reserve",
+    "branches": "Branches",
+    "gallery": "Gallery",
+    "promotions": "Offers"
   },
   "hero": {
     "eyebrow": "New season",
@@ -118,5 +123,57 @@
     "company": "Company",
     "support": "Support",
     "rights": "All rights reserved."
+  },
+  "menu": {
+    "title": "Our menu",
+    "subtitle": "Freshly prepared, every day",
+    "addToCart": "Add to order",
+    "addedToCart": "Added",
+    "vegetarian": "Vegetarian",
+    "spicy": "Spicy",
+    "unavailable": "Unavailable",
+    "backToMenu": "Back to menu",
+    "relatedTitle": "More in this category",
+    "notFound": "Dish not found"
+  },
+  "reservation": {
+    "title": "Reserve a table",
+    "subtitle": "Book in a few taps — we'll confirm by phone.",
+    "branch": "Branch",
+    "name": "Full name",
+    "phone": "Phone number",
+    "email": "Email (optional)",
+    "partySize": "Party size",
+    "dateTime": "Date & time",
+    "notes": "Special requests (optional)",
+    "submit": "Request reservation",
+    "submitting": "Requesting…",
+    "success": "Your table is requested!",
+    "reference": "Reference",
+    "lookupTitle": "Reservation details",
+    "notFound": "We couldn't find that reservation."
+  },
+  "branches": {
+    "title": "Find a branch",
+    "subtitle": "Visit us across the Kingdom",
+    "openingHours": "Opening hours",
+    "call": "Call",
+    "directions": "Open in map",
+    "mapTitle": "Map of {name}"
+  },
+  "gallery": {
+    "title": "Gallery",
+    "subtitle": "A taste of the experience"
+  },
+  "promotions": {
+    "title": "Offers",
+    "subtitle": "Limited-time deals",
+    "viewMenu": "View menu"
+  },
+  "restaurantSections": {
+    "featuredTitle": "Signature dishes",
+    "featuredSubtitle": "The favorites our guests come back for",
+    "promotionsTitle": "Current offers",
+    "branchesTitle": "Our branches"
   }
 }

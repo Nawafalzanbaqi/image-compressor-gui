@@ -12,7 +12,7 @@
  */
 import optionsJson from "../../../options.json";
 
-export type SiteType = "ecommerce" | "corporate" | "blog";
+export type SiteType = "ecommerce" | "restaurant" | "corporate" | "blog";
 export type Direction = "rtl" | "ltr";
 
 export interface Options {

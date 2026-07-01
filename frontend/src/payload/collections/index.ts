@@ -156,6 +156,73 @@ export const Reviews: Collection = {
   ],
 };
 
+// ── Restaurant vertical collections (mirror the restaurant seeds/DTOs) ────────
+export const MenuCategories: Collection = {
+  slug: "menu-categories",
+  admin: { useAsTitle: "name" },
+  fields: [
+    localizedText("name", true),
+    { name: "slug", type: "text", required: true, unique: true },
+    { name: "displayOrder", type: "number", defaultValue: 0 },
+  ],
+};
+
+export const MenuItems: Collection = {
+  slug: "menu-items",
+  admin: { useAsTitle: "name" },
+  fields: [
+    localizedText("name", true),
+    { name: "slug", type: "text", required: true, unique: true },
+    localizedRich("description"),
+    { name: "priceAmount", type: "number", required: true },
+    { name: "currency", type: "text", defaultValue: "SAR" },
+    { name: "menuCategorySlug", type: "text", required: true },
+    { name: "images", type: "array", fields: [{ name: "image", type: "upload", relationTo: "media" }] },
+    { name: "isVegetarian", type: "checkbox", defaultValue: false },
+    { name: "isSpicy", type: "checkbox", defaultValue: false },
+    { name: "isAvailable", type: "checkbox", defaultValue: true },
+  ],
+};
+
+export const Branches: Collection = {
+  slug: "branches",
+  admin: { useAsTitle: "name" },
+  fields: [
+    localizedText("name", true),
+    { name: "slug", type: "text", required: true, unique: true },
+    { name: "address", type: "text", required: true },
+    { name: "city", type: "text", required: true },
+    { name: "latitude", type: "number", required: true },
+    { name: "longitude", type: "number", required: true },
+    { name: "phone", type: "text" },
+    { name: "openingHours", type: "text" },
+  ],
+};
+
+export const Promotions: Collection = {
+  slug: "promotions",
+  admin: { useAsTitle: "internalName" },
+  fields: [
+    { name: "internalName", type: "text", required: true },
+    ...orderVisible,
+    localizedText("title", true),
+    localizedRich("description"),
+    { name: "href", type: "text", defaultValue: "/menu" },
+    { name: "image", type: "upload", relationTo: "media" },
+  ],
+};
+
+export const Gallery: Collection = {
+  slug: "gallery",
+  admin: { useAsTitle: "internalName" },
+  fields: [
+    { name: "internalName", type: "text", required: true },
+    { name: "order", type: "number", defaultValue: 0 },
+    localizedText("alt"),
+    { name: "image", type: "upload", relationTo: "media" },
+  ],
+};
+
 export const collections: Collection[] = [
   Users,
   Media,
@@ -167,4 +234,10 @@ export const collections: Collection[] = [
   Pages,
   Footer,
   Reviews,
+  // Restaurant vertical
+  MenuCategories,
+  MenuItems,
+  Branches,
+  Promotions,
+  Gallery,
 ];

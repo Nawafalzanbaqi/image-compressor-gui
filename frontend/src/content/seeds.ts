@@ -273,3 +273,254 @@ export const footerColumns: FooterColumn[] = [
 export function pick(text: LocalizedText, locale: string): string {
   return locale === "ar" ? text.ar : text.en;
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RESTAURANT vertical seeds (mirror the restaurant Payload collections + the
+// backend Menu/Branch DTOs). Used as offline fallback by the restaurant features.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface MenuItemSeed {
+  id: string;
+  slug: string;
+  name: string;
+  description?: string;
+  price: { amount: number; currency: string };
+  menuCategorySlug: string;
+  imageUrls: string[];
+  isVegetarian: boolean;
+  isSpicy: boolean;
+  isAvailable: boolean;
+}
+
+export interface MenuCategorySeed {
+  id: string;
+  slug: string;
+  name: string;
+  displayOrder: number;
+  items: MenuItemSeed[];
+}
+
+export interface BranchSeed {
+  id: string;
+  slug: string;
+  name: string;
+  address: string;
+  city: string;
+  latitude: number;
+  longitude: number;
+  phone?: string;
+  openingHours?: string;
+}
+
+export interface PromotionSeed {
+  id: string;
+  order: number;
+  visible: boolean;
+  title: LocalizedText;
+  description: LocalizedText;
+  imageUrl: string;
+  href: string;
+}
+
+export interface GalleryImageSeed {
+  id: string;
+  order: number;
+  alt: LocalizedText;
+  imageUrl: string;
+}
+
+export const restaurantHeroSlides: HeroSlide[] = [
+  {
+    id: "r-hero-1",
+    order: 0,
+    visible: true,
+    eyebrow: { en: "Since 1998", ar: "منذ ١٩٩٨" },
+    title: {
+      en: "Authentic flavors, made fresh",
+      ar: "نكهات أصيلة، طازجة دائماً",
+    },
+    subtitle: {
+      en: "Regional classics cooked to order, dine in or delivered to your door.",
+      ar: "أطباق كلاسيكية تُطهى عند الطلب، تناول لدينا أو توصيل إلى بابك.",
+    },
+    ctaLabel: { en: "View the menu", ar: "استعرض القائمة" },
+    ctaHref: "/menu",
+    imageUrl: IMG("photo-1517248135467-4c7edcad34c4"),
+  },
+];
+
+export const menuCategories: MenuCategorySeed[] = [
+  {
+    id: "mc1",
+    slug: "starters",
+    name: "Starters",
+    displayOrder: 1,
+    items: [
+      {
+        id: "mi1",
+        slug: "hummus",
+        name: "Hummus",
+        description: "Creamy chickpea dip with olive oil and warm bread.",
+        price: { amount: 22, currency: "SAR" },
+        menuCategorySlug: "starters",
+        imageUrls: [IMG("photo-1637949385162-e416cd97a89f")],
+        isVegetarian: true,
+        isSpicy: false,
+        isAvailable: true,
+      },
+      {
+        id: "mi2",
+        slug: "fattoush",
+        name: "Fattoush Salad",
+        description: "Crisp greens, sumac, and toasted pita.",
+        price: { amount: 26, currency: "SAR" },
+        menuCategorySlug: "starters",
+        imageUrls: [IMG("photo-1512621776951-a57141f2eefd")],
+        isVegetarian: true,
+        isSpicy: false,
+        isAvailable: true,
+      },
+    ],
+  },
+  {
+    id: "mc2",
+    slug: "mains",
+    name: "Mains",
+    displayOrder: 2,
+    items: [
+      {
+        id: "mi3",
+        slug: "grilled-kofta",
+        name: "Grilled Kofta",
+        description: "Char-grilled spiced minced meat skewers with rice.",
+        price: { amount: 48, currency: "SAR" },
+        menuCategorySlug: "mains",
+        imageUrls: [IMG("photo-1529193591184-b1d58069ecdd")],
+        isVegetarian: false,
+        isSpicy: true,
+        isAvailable: true,
+      },
+      {
+        id: "mi4",
+        slug: "chicken-shawarma-plate",
+        name: "Chicken Shawarma Plate",
+        description: "Marinated chicken, garlic sauce, and fries.",
+        price: { amount: 39, currency: "SAR" },
+        menuCategorySlug: "mains",
+        imageUrls: [IMG("photo-1561651823-34feb02250e4")],
+        isVegetarian: false,
+        isSpicy: false,
+        isAvailable: true,
+      },
+    ],
+  },
+  {
+    id: "mc3",
+    slug: "desserts",
+    name: "Desserts",
+    displayOrder: 3,
+    items: [
+      {
+        id: "mi5",
+        slug: "kunafa",
+        name: "Kunafa",
+        description: "Sweet cheese pastry soaked in syrup.",
+        price: { amount: 28, currency: "SAR" },
+        menuCategorySlug: "desserts",
+        imageUrls: [IMG("photo-1583350701972-5b5c2e0e8a8b")],
+        isVegetarian: true,
+        isSpicy: false,
+        isAvailable: true,
+      },
+    ],
+  },
+];
+
+export const branches: BranchSeed[] = [
+  {
+    id: "b1",
+    slug: "riyadh-olaya",
+    name: "Riyadh — Olaya",
+    address: "Olaya St, Al Olaya",
+    city: "Riyadh",
+    latitude: 24.6908,
+    longitude: 46.6853,
+    phone: "+966 11 000 0000",
+    openingHours: "12:00–00:00 daily",
+  },
+  {
+    id: "b2",
+    slug: "jeddah-corniche",
+    name: "Jeddah — Corniche",
+    address: "Corniche Rd",
+    city: "Jeddah",
+    latitude: 21.581,
+    longitude: 39.136,
+    phone: "+966 12 000 0000",
+    openingHours: "13:00–01:00 daily",
+  },
+];
+
+export const promotions: PromotionSeed[] = [
+  {
+    id: "promo-1",
+    order: 0,
+    visible: true,
+    title: { en: "Family feast for 4", ar: "وليمة العائلة لأربعة" },
+    description: {
+      en: "A generous spread of mains, sides, and dessert.",
+      ar: "تشكيلة سخية من الأطباق الرئيسية والمقبلات والحلوى.",
+    },
+    imageUrl: IMG("photo-1555939594-58d7cb561ad1"),
+    href: "/menu",
+  },
+  {
+    id: "promo-2",
+    order: 1,
+    visible: true,
+    title: { en: "Weekday lunch deal", ar: "عرض غداء أيام الأسبوع" },
+    description: {
+      en: "Any main plus a drink at a special price.",
+      ar: "أي طبق رئيسي مع مشروب بسعر خاص.",
+    },
+    imageUrl: IMG("photo-1414235077428-338989a2e8c0"),
+    href: "/menu",
+  },
+];
+
+export const galleryImages: GalleryImageSeed[] = [
+  { id: "g1", order: 0, alt: { en: "Grilled platter", ar: "طبق مشاوي" }, imageUrl: IMG("photo-1544025162-d76694265947") },
+  { id: "g2", order: 1, alt: { en: "Fresh mezze", ar: "مقبلات طازجة" }, imageUrl: IMG("photo-1540189549336-e6e99c3679fe") },
+  { id: "g3", order: 2, alt: { en: "Dining room", ar: "قاعة الطعام" }, imageUrl: IMG("photo-1517248135467-4c7edcad34c4") },
+  { id: "g4", order: 3, alt: { en: "Dessert", ar: "حلوى" }, imageUrl: IMG("photo-1551024506-0bccd828d307") },
+];
+
+export const restaurantFaqs: FaqItem[] = [
+  {
+    id: "rf1",
+    order: 0,
+    visible: true,
+    question: { en: "Do you take reservations?", ar: "هل تقبلون الحجوزات؟" },
+    answer: {
+      en: "Yes — book a table online and we'll confirm by phone.",
+      ar: "نعم — احجز طاولة أونلاين وسنؤكد عبر الهاتف.",
+    },
+  },
+  {
+    id: "rf2",
+    order: 1,
+    visible: true,
+    question: { en: "Do you offer delivery?", ar: "هل يوجد توصيل؟" },
+    answer: {
+      en: "We deliver from every branch during opening hours.",
+      ar: "نوصّل من جميع الفروع خلال ساعات العمل.",
+    },
+  },
+];
+
+/** Restaurant profile for LocalBusiness JSON-LD (primary branch). */
+export const restaurantProfile = {
+  name: { en: "Bayt Al Nakha", ar: "بيت النكهة" },
+  cuisine: "Middle Eastern",
+  priceRange: "$$",
+};

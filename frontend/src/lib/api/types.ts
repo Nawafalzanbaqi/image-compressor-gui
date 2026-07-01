@@ -18,3 +18,11 @@ export type OrderItemDto = components["schemas"]["OrderItemDto"];
 export type ContentSectionDto = components["schemas"]["ContentSectionDto"];
 export type ContentBlockDto = components["schemas"]["ContentBlockDto"];
 export type OrderStatus = OrderDto["status"];
+
+// ── Restaurant vertical ──
+export type MenuDto = components["schemas"]["MenuDto"];
+export type MenuCategoryDto = components["schemas"]["MenuCategoryDto"];
+export type MenuItemDto = components["schemas"]["MenuItemDto"];
+export type BranchDto = components["schemas"]["BranchDto"];
+export type CreateReservationRequest = components["schemas"]["CreateReservationRequest"];
+export type ReservationDto = components["schemas"]["ReservationDto"];

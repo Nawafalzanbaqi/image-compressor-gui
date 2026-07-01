@@ -28,7 +28,12 @@
     "cart": "السلة",
     "search": "بحث",
     "dashboard": "حسابي",
-    "reviews": "التقييمات"
+    "reviews": "التقييمات",
+    "menu": "القائمة",
+    "reserve": "احجز",
+    "branches": "الفروع",
+    "gallery": "المعرض",
+    "promotions": "العروض"
   },
   "hero": {
     "eyebrow": "موسم جديد",
@@ -118,5 +123,57 @@
     "company": "الشركة",
     "support": "الدعم",
     "rights": "جميع الحقوق محفوظة."
+  },
+  "menu": {
+    "title": "قائمتنا",
+    "subtitle": "تُحضَّر طازجة كل يوم",
+    "addToCart": "أضِف للطلب",
+    "addedToCart": "أُضيف",
+    "vegetarian": "نباتي",
+    "spicy": "حار",
+    "unavailable": "غير متوفر",
+    "backToMenu": "العودة إلى القائمة",
+    "relatedTitle": "المزيد من هذا القسم",
+    "notFound": "الطبق غير موجود"
+  },
+  "reservation": {
+    "title": "احجز طاولة",
+    "subtitle": "احجز بسهولة — سنؤكد عبر الهاتف.",
+    "branch": "الفرع",
+    "name": "الاسم الكامل",
+    "phone": "رقم الجوال",
+    "email": "البريد الإلكتروني (اختياري)",
+    "partySize": "عدد الأشخاص",
+    "dateTime": "التاريخ والوقت",
+    "notes": "طلبات خاصة (اختياري)",
+    "submit": "اطلب الحجز",
+    "submitting": "جارٍ الإرسال…",
+    "success": "تم طلب حجز طاولتك!",
+    "reference": "الرقم المرجعي",
+    "lookupTitle": "تفاصيل الحجز",
+    "notFound": "لم نتمكن من العثور على هذا الحجز."
+  },
+  "branches": {
+    "title": "ابحث عن فرع",
+    "subtitle": "زُرنا في جميع أنحاء المملكة",
+    "openingHours": "ساعات العمل",
+    "call": "اتصل",
+    "directions": "افتح في الخريطة",
+    "mapTitle": "خريطة {name}"
+  },
+  "gallery": {
+    "title": "المعرض",
+    "subtitle": "لمحة عن التجربة"
+  },
+  "promotions": {
+    "title": "العروض",
+    "subtitle": "عروض لفترة محدودة",
+    "viewMenu": "استعرض القائمة"
+  },
+  "restaurantSections": {
+    "featuredTitle": "أطباق مميزة",
+    "featuredSubtitle": "المفضلة التي يعود إليها ضيوفنا",
+    "promotionsTitle": "العروض الحالية",
+    "branchesTitle": "فروعنا"
   }
 }

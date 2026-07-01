@@ -36,3 +36,6 @@ frontend/src/lib/api/generated.ts
 Thumbs.db
 *.log
 .idea/
+
+# TS incremental build info
+*.tsbuildinfo

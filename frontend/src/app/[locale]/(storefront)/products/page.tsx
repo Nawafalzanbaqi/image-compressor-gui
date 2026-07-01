@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { buildMetadata } from "@/lib/seo";
+import { isRouteEnabled } from "@/config/nav";
 import { ProductListing } from "@/features/products/components/product-listing";
 import type { Locale } from "@/i18n/routing";
 
@@ -29,6 +31,7 @@ export default async function ProductsPage({
   const { locale } = await params;
   const { page: pageParam, category } = await searchParams;
   setRequestLocale(locale);
+  if (!isRouteEnabled("products")) notFound();
 
   const t = await getTranslations({ locale, namespace: "nav" });
   const page = Math.max(1, Number(pageParam) || 1);

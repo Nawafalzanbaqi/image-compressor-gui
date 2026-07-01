@@ -90,6 +90,71 @@ export function productJsonLd(product: ProductDto, locale: Locale) {
   };
 }
 
+/** JSON-LD: Restaurant / LocalBusiness. Rendered on the restaurant home + branch pages. */
+export function restaurantJsonLd(input: {
+  name: string;
+  servesCuisine?: string;
+  priceRange?: string;
+  branches: {
+    name: string;
+    address: string;
+    city: string;
+    latitude: number;
+    longitude: number;
+    phone?: string | null;
+    openingHours?: string | null;
+  }[];
+}) {
+  const primary = input.branches[0];
+  return {
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    name: input.name,
+    url: siteUrl(),
+    ...(input.servesCuisine ? { servesCuisine: input.servesCuisine } : {}),
+    ...(input.priceRange ? { priceRange: input.priceRange } : {}),
+    menu: `${siteUrl()}/menu`,
+    ...(primary
+      ? {
+          telephone: primary.phone,
+          openingHours: primary.openingHours,
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: primary.address,
+            addressLocality: primary.city,
+            addressCountry: "SA",
+          },
+          geo: {
+            "@type": "GeoCoordinates",
+            latitude: primary.latitude,
+            longitude: primary.longitude,
+          },
+        }
+      : {}),
+  };
+}
+
+/** JSON-LD: a single menu item (schema.org MenuItem). */
+export function menuItemJsonLd(item: {
+  name: string;
+  description?: string;
+  price: { amount: number; currency: string };
+  imageUrls?: string[];
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "MenuItem",
+    name: item.name,
+    description: item.description ?? "",
+    image: item.imageUrls ?? [],
+    offers: {
+      "@type": "Offer",
+      price: item.price.amount,
+      priceCurrency: item.price.currency,
+    },
+  };
+}
+
 /** Safe JSON-LD script tag props. Data is app-controlled (no user HTML). */
 export function jsonLdScript(data: unknown) {
   return {

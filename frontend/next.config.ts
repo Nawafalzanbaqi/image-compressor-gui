@@ -17,6 +17,8 @@ const ContentSecurityPolicy = [
   "frame-ancestors 'none'",
   "object-src 'none'",
   "img-src 'self' data: blob: https:",
+  // Restaurant branch locator embeds an OpenStreetMap iframe (no API key).
+  "frame-src 'self' https://www.openstreetmap.org",
   "font-src 'self' data:",
   "style-src 'self' 'unsafe-inline'",
   "script-src 'self' 'unsafe-inline'" +
