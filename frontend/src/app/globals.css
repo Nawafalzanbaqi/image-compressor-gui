@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 33% 98%;
+    --foreground: 24 10% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 24 10% 10%;
+    --primary: 24 45% 22%;
+    --primary-foreground: 40 33% 98%;
+    --secondary: 30 24% 92%;
+    --secondary-foreground: 24 30% 18%;
+    --muted: 30 15% 94%;
+    --muted-foreground: 24 8% 42%;
+    --accent: 32 70% 52%;
+    --accent-foreground: 24 30% 12%;
+    --destructive: 0 72% 42%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 30 12% 88%;
+    --input: 30 12% 86%;
+    --ring: 32 70% 52%;
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  /* Visible focus rings for keyboard users (WCAG 2.4.7). */
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+  /* Logical properties respect RTL/LTR automatically. */
+  [dir="rtl"] {
+    text-align: start;
+  }
+}

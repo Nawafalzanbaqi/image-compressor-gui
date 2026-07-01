@@ -1,0 +1,122 @@
+{
+  "common": {
+    "brand": "سوق أتيليه",
+    "currency": "ر.س",
+    "loading": "جارٍ التحميل…",
+    "error": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+    "empty": "لا يوجد شيء لعرضه بعد.",
+    "readMore": "اقرأ المزيد",
+    "viewAll": "عرض الكل",
+    "search": "بحث",
+    "searchPlaceholder": "ابحث عن المنتجات…",
+    "close": "إغلاق",
+    "menu": "القائمة",
+    "skipToContent": "تخطَّ إلى المحتوى",
+    "language": "اللغة",
+    "outOfStock": "غير متوفر",
+    "inStock": "متوفر",
+    "price": "السعر"
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "products": "المتجر",
+    "categories": "الفئات",
+    "wishlist": "المفضلة",
+    "about": "من نحن",
+    "contact": "تواصل معنا",
+    "faq": "الأسئلة الشائعة",
+    "cart": "السلة",
+    "search": "بحث",
+    "dashboard": "حسابي",
+    "reviews": "التقييمات"
+  },
+  "hero": {
+    "eyebrow": "موسم جديد",
+    "title": "أساسيات راقية، صُنعت لتدوم",
+    "subtitle": "مجموعة مختارة من المنتجات الفاخرة، تُوصَّل إلى جميع أنحاء المملكة.",
+    "cta": "تسوّق المجموعة",
+    "secondaryCta": "استكشف الفئات"
+  },
+  "sections": {
+    "categoriesTitle": "تسوّق حسب الفئة",
+    "featuredTitle": "منتجات مميزة",
+    "featuredSubtitle": "قطع مختارة بعناية يحبها عملاؤنا",
+    "bannersTitle": "أبرز العروض"
+  },
+  "product": {
+    "addToCart": "أضف إلى السلة",
+    "addedToCart": "تمت الإضافة إلى السلة",
+    "adding": "جارٍ الإضافة…",
+    "buyNow": "اشترِ الآن",
+    "quantity": "الكمية",
+    "description": "الوصف",
+    "relatedTitle": "قد يعجبك أيضًا",
+    "backToProducts": "العودة إلى المتجر",
+    "notFound": "المنتج غير موجود"
+  },
+  "cart": {
+    "title": "سلتك",
+    "empty": "سلتك فارغة.",
+    "continueShopping": "متابعة التسوق",
+    "subtotal": "المجموع الفرعي",
+    "checkout": "المتابعة إلى الدفع",
+    "remove": "إزالة",
+    "item": "منتج",
+    "items": "منتجات"
+  },
+  "checkout": {
+    "title": "الدفع",
+    "customerDetails": "بيانات العميل",
+    "name": "الاسم الكامل",
+    "email": "البريد الإلكتروني",
+    "phone": "رقم الهاتف",
+    "address": "عنوان الشحن",
+    "paymentMethod": "طريقة الدفع",
+    "placeOrder": "تأكيد الطلب",
+    "placing": "جارٍ تأكيد الطلب…",
+    "orderSummary": "ملخص الطلب",
+    "total": "الإجمالي",
+    "success": "شكرًا لك! تم تأكيد طلبك.",
+    "orderNumber": "رقم الطلب"
+  },
+  "order": {
+    "trackingTitle": "تتبّع الطلب",
+    "status": "الحالة",
+    "placedAt": "تاريخ الطلب",
+    "notFound": "لم نتمكن من العثور على هذا الطلب.",
+    "statuses": {
+      "Pending": "قيد الانتظار",
+      "Paid": "مدفوع",
+      "Shipped": "تم الشحن",
+      "Delivered": "تم التوصيل",
+      "Cancelled": "ملغى"
+    }
+  },
+  "wishlist": {
+    "title": "قائمة أمنياتك",
+    "empty": "قائمة أمنياتك فارغة."
+  },
+  "search": {
+    "title": "بحث",
+    "resultsFor": "نتائج البحث عن",
+    "noResults": "لم تطابق أي منتجات بحثك."
+  },
+  "contact": {
+    "title": "تواصل معنا",
+    "name": "اسمك",
+    "email": "بريدك الإلكتروني",
+    "message": "الرسالة",
+    "send": "إرسال الرسالة",
+    "sent": "شكرًا — سنتواصل معك قريبًا."
+  },
+  "faq": {
+    "title": "الأسئلة الشائعة"
+  },
+  "footer": {
+    "tagline": "منتجات فاخرة، تُوصَّل بعناية.",
+    "shop": "المتجر",
+    "company": "الشركة",
+    "support": "الدعم",
+    "rights": "جميع الحقوق محفوظة."
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "common": {
+    "brand": "Souq Atelier",
+    "currency": "SAR",
+    "loading": "Loading…",
+    "error": "Something went wrong. Please try again.",
+    "empty": "Nothing to show here yet.",
+    "readMore": "Read more",
+    "viewAll": "View all",
+    "search": "Search",
+    "searchPlaceholder": "Search products…",
+    "close": "Close",
+    "menu": "Menu",
+    "skipToContent": "Skip to content",
+    "language": "Language",
+    "outOfStock": "Out of stock",
+    "inStock": "In stock",
+    "price": "Price"
+  },
+  "nav": {
+    "home": "Home",
+    "products": "Shop",
+    "categories": "Categories",
+    "wishlist": "Wishlist",
+    "about": "About",
+    "contact": "Contact",
+    "faq": "FAQ",
+    "cart": "Cart",
+    "search": "Search",
+    "dashboard": "My Account",
+    "reviews": "Reviews"
+  },
+  "hero": {
+    "eyebrow": "New season",
+    "title": "Refined essentials, crafted to last",
+    "subtitle": "A curated collection of premium goods, delivered across the Kingdom.",
+    "cta": "Shop the collection",
+    "secondaryCta": "Explore categories"
+  },
+  "sections": {
+    "categoriesTitle": "Shop by category",
+    "featuredTitle": "Featured products",
+    "featuredSubtitle": "Handpicked pieces our customers love",
+    "bannersTitle": "Highlights"
+  },
+  "product": {
+    "addToCart": "Add to cart",
+    "addedToCart": "Added to cart",
+    "adding": "Adding…",
+    "buyNow": "Buy now",
+    "quantity": "Quantity",
+    "description": "Description",
+    "relatedTitle": "You may also like",
+    "backToProducts": "Back to shop",
+    "notFound": "Product not found"
+  },
+  "cart": {
+    "title": "Your cart",
+    "empty": "Your cart is empty.",
+    "continueShopping": "Continue shopping",
+    "subtotal": "Subtotal",
+    "checkout": "Proceed to checkout",
+    "remove": "Remove",
+    "item": "item",
+    "items": "items"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "customerDetails": "Customer details",
+    "name": "Full name",
+    "email": "Email address",
+    "phone": "Phone number",
+    "address": "Shipping address",
+    "paymentMethod": "Payment method",
+    "placeOrder": "Place order",
+    "placing": "Placing order…",
+    "orderSummary": "Order summary",
+    "total": "Total",
+    "success": "Thank you! Your order has been placed.",
+    "orderNumber": "Order number"
+  },
+  "order": {
+    "trackingTitle": "Order tracking",
+    "status": "Status",
+    "placedAt": "Placed on",
+    "notFound": "We couldn't find that order.",
+    "statuses": {
+      "Pending": "Pending",
+      "Paid": "Paid",
+      "Shipped": "Shipped",
+      "Delivered": "Delivered",
+      "Cancelled": "Cancelled"
+    }
+  },
+  "wishlist": {
+    "title": "Your wishlist",
+    "empty": "Your wishlist is empty."
+  },
+  "search": {
+    "title": "Search",
+    "resultsFor": "Results for",
+    "noResults": "No products matched your search."
+  },
+  "contact": {
+    "title": "Contact us",
+    "name": "Your name",
+    "email": "Your email",
+    "message": "Message",
+    "send": "Send message",
+    "sent": "Thanks — we'll be in touch shortly."
+  },
+  "faq": {
+    "title": "Frequently asked questions"
+  },
+  "footer": {
+    "tagline": "Premium goods, delivered with care.",
+    "shop": "Shop",
+    "company": "Company",
+    "support": "Support",
+    "rights": "All rights reserved."
+  }
+}

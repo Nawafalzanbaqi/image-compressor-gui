@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- DOMAIN LAYER — zero external dependencies. Depends on nothing. -->
+  <PropertyGroup>
+    <RootNamespace>SoftwareFactory.Domain</RootNamespace>
+  </PropertyGroup>
+</Project>
