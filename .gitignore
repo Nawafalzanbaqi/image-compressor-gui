@@ -39,3 +39,6 @@ Thumbs.db
 
 # TS incremental build info
 *.tsbuildinfo
+
+# Lighthouse CI local reports
+.lighthouseci/
