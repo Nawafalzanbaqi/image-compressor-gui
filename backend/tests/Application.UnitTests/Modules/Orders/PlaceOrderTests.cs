@@ -1,10 +1,10 @@
 using FluentAssertions;
-using SoftwareFactory.Application.Modules.Orders.Commands.PlaceOrder;
+using SoftwareFactory.Application.Shared.Commerce.Orders.Commands.PlaceOrder;
 using SoftwareFactory.Application.UnitTests.TestSupport;
 using SoftwareFactory.Domain.Common;
 using SoftwareFactory.Domain.Modules.Categories;
 using SoftwareFactory.Domain.Modules.Products;
-using CartAggregate = SoftwareFactory.Domain.Modules.Cart.Cart;
+using CartAggregate = SoftwareFactory.Domain.Shared.Commerce.Cart.Cart;
 using Xunit;
 
 namespace SoftwareFactory.Application.UnitTests.Modules.Orders;

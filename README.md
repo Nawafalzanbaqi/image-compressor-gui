@@ -152,6 +152,65 @@ is editable in the Payload admin — nothing is hardcoded in components.
 
 ---
 
+## Verticals (config-driven by `siteType`)
+
+The same codebase renders different site types from one `options.json` field.
+Phase 1 shipped **ecommerce**; Phase 2 added **restaurant** to prove the
+foundation generalizes. Switch verticals by pointing `options.json` at a variant:
+
+```bash
+cp options.ecommerce.json options.json   # storefront: products, cart, checkout…
+cp options.restaurant.json options.json  # restaurant: menu, reservations, branches…
+```
+
+- **Backend** — `Program.cs` maps only the active siteType's endpoint groups
+  (`/api/products` + `/api/categories` for ecommerce; `/api/menu`, `/api/branches`,
+  `/api/reservations` for restaurant). The other vertical's routes never enter the
+  routing table. `DbSeeder` seeds only the active vertical's data.
+- **Frontend** — `src/config/options.ts` + `src/config/nav.ts` build siteType-specific
+  navigation; vertical-specific routes call `notFound()` when the siteType doesn't match.
+
+**Restaurant sections** (each its own module, CMS-editable): Hero · Menu (categories
++ items) · Item Detail · Cart & Order · Table Reservation · Branch Locator (map) ·
+Promotions · Gallery · Reviews · FAQ · About · Contact · Footer. Restaurant SEO uses
+**Restaurant / LocalBusiness** JSON-LD (vs Organization/Product for ecommerce).
+
+### Proof it generalizes (dual-boot test)
+
+`backend/tests/Integration.Tests/VerticalRoutingTests.cs` boots the same binary
+twice and asserts each vertical exposes only its own routes and 404s the other's;
+`frontend/tests/unit` asserts the nav differs by siteType. CI's Lighthouse job runs
+the quality gate against **both** verticals via a build matrix.
+
+## Shared vs Vertical-Specific Modules
+
+The Phase 2 refactor split modules by whether they are genuinely generic:
+
+| Concern | Placement | Why |
+|---|---|---|
+| **Cart, CartItem** | `…/Shared/Commerce/Cart` | A cart of priced line items is identical for any vertical. |
+| **Order, OrderItem, OrderStatus, Checkout (PlaceOrder)** | `…/Shared/Commerce/Orders`, `…/Cart` | Order number, status, totals, customer capture — vertical-neutral. |
+| **`ICatalogService`** (the seam) | `…/Shared/Commerce/Catalog` | Cart needs to price an item; *what* the item is (Product vs MenuItem) is vertical-specific. |
+| **CMS Content** (Hero/About/Contact/Footer/FAQ/Banners) | `Modules/Content` | Generic content blocks, reused by all verticals. |
+| **Product, Category** | `Modules/*` (ecommerce) | Vertical-specific catalog. |
+| **MenuCategory, MenuItem, Branch, RestaurantTable, Reservation** | `Modules/Restaurant` | Vertical-specific catalog + booking. |
+
+**The key insight:** Cart/Checkout looked ecommerce-specific only because
+`AddCartItem` queried the `Products` table directly. Introducing `ICatalogService`
+(implemented by `ProductCatalogService` for ecommerce and `MenuCatalogService` for
+restaurant, selected by siteType in DI) removed that coupling — now the *exact same*
+Cart/Order/Checkout use cases serve both verticals unchanged. Adding a third vertical
+means: add its catalog module + an `ICatalogService` implementation; the commerce
+core is reused for free. All Phase 1 tests still pass after the move (only import
+aliases/DI wiring updated, never assertions).
+
+**Recipe for the next vertical:** add `Domain/Modules/<Vertical>` + Application
+use cases + EF configs + `Web/Endpoints`, register an `ICatalogService` impl and the
+endpoint group under the new `siteType` in `Program.cs`, add the frontend `features/*`
+and siteType nav entries, and a `options.<vertical>.json`. No shared/core edits needed.
+
+---
+
 ## Quality standards built in
 
 - **i18n** — next-intl ar/en switch, correct RTL/LTR per locale, hreflang tags.
@@ -184,12 +243,16 @@ CI** step with minimum-score thresholds (see `frontend/lighthouserc.json`).
 
 ---
 
-## Backlog — out of scope for Phase 1
+## Backlog — out of scope (Phase 3)
 
-Left as clear `// TODO(phase-2):` markers in code so nothing is lost:
+Left as clear `// TODO(phase-3):` markers in code so nothing is lost:
 
 - Telegram bot / factory dashboard / client CRM
-- Other site-type templates (LMS, real-estate, restaurant, healthcare, …)
+- Remaining site-type templates (LMS, real-estate, healthcare, …)
 - AI orchestration layer (multi-model routing)
 - Multi-tenant / white-label logic
 - Real payment-provider integration (Tamara, Tabi) and ZATCA e-invoicing
+
+_Phase 1 delivered the ecommerce vertical + reusable foundation. Phase 2 added the
+restaurant vertical and extracted the shared commerce core (see “Shared vs
+Vertical-Specific Modules”)._

@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using CartAggregate = SoftwareFactory.Domain.Modules.Cart.Cart;
-using CartItemEntity = SoftwareFactory.Domain.Modules.Cart.CartItem;
+using CartAggregate = SoftwareFactory.Domain.Shared.Commerce.Cart.Cart;
+using CartItemEntity = SoftwareFactory.Domain.Shared.Commerce.Cart.CartItem;
 
 namespace SoftwareFactory.Infrastructure.Persistence.Configurations;
 

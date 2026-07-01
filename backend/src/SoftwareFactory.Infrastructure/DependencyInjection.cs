@@ -4,8 +4,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 using SoftwareFactory.Application.Common.Interfaces;
+using SoftwareFactory.Application.Shared.Commerce.Catalog;
 using SoftwareFactory.Infrastructure.Caching;
 using SoftwareFactory.Infrastructure.Configuration;
+using SoftwareFactory.Infrastructure.Modules.Products;
+using SoftwareFactory.Infrastructure.Modules.Restaurant;
 using SoftwareFactory.Infrastructure.Persistence;
 using SoftwareFactory.Infrastructure.Persistence.Repositories;
 
@@ -28,6 +31,15 @@ public static class DependencyInjection
         services.AddScoped<IAppDbContext>(sp => sp.GetRequiredService<AppDbContext>());
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddScoped<IDomainEventDispatcher, DomainEventDispatcher>();
+
+        // ── Vertical-specific catalog adapter feeding the SHARED cart/checkout ───
+        // The shared AddCartItem use case depends on ICatalogService; each siteType
+        // supplies its own catalog source. This is the seam that lets Cart/Order/
+        // Checkout be genuinely generic across verticals.
+        if (string.Equals(factoryOptions.SiteType, "restaurant", StringComparison.OrdinalIgnoreCase))
+            services.AddScoped<ICatalogService, MenuCatalogService>();
+        else
+            services.AddScoped<ICatalogService, ProductCatalogService>();
 
         // ── Redis (optional; cache degrades gracefully if unavailable) ───────────
         var redisConnection = config.GetConnectionString("Redis") ?? config["ConnectionStrings:Redis"];

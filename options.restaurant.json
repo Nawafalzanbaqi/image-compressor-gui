@@ -1,0 +1,16 @@
+{
+  "$schema": "./options.schema.json",
+  "siteType": "restaurant",
+  "language": "ar-en",
+  "defaultDirection": "rtl",
+  "payments": ["cod", "mada"],
+  "integrations": ["whatsapp", "ga4"],
+  "features": {
+    "clientDashboard": true,
+    "cms": true,
+    "reviews": true,
+    "loyalty": false,
+    "analytics": true
+  },
+  "designDirection": "premium"
+}

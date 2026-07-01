@@ -1,9 +1,10 @@
 using FluentAssertions;
-using SoftwareFactory.Application.Modules.Cart.Commands.AddCartItem;
+using SoftwareFactory.Application.Shared.Commerce.Cart.Commands.AddCartItem;
 using SoftwareFactory.Application.UnitTests.TestSupport;
 using SoftwareFactory.Domain.Common;
 using SoftwareFactory.Domain.Modules.Categories;
 using SoftwareFactory.Domain.Modules.Products;
+using SoftwareFactory.Infrastructure.Modules.Products;
 using Xunit;
 
 namespace SoftwareFactory.Application.UnitTests.Modules.Cart;
@@ -20,7 +21,7 @@ public class AddCartItemTests
         db.Products.Add(product);
         await db.SaveChangesAsync();
 
-        var handler = new AddCartItemCommandHandler(db);
+        var handler = new AddCartItemCommandHandler(db, new ProductCatalogService(db));
         var cartId = Guid.NewGuid();
 
         var cart = await handler.Handle(new AddCartItemCommand(cartId, product.Id, 3), CancellationToken.None);
@@ -40,7 +41,7 @@ public class AddCartItemTests
         db.Products.Add(product);
         await db.SaveChangesAsync();
 
-        var handler = new AddCartItemCommandHandler(db);
+        var handler = new AddCartItemCommandHandler(db, new ProductCatalogService(db));
         var cartId = Guid.NewGuid();
 
         await handler.Handle(new AddCartItemCommand(cartId, product.Id, 1), CancellationToken.None);

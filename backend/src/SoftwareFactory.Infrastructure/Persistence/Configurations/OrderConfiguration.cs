@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SoftwareFactory.Domain.Modules.Orders;
+using SoftwareFactory.Domain.Shared.Commerce.Orders;
 
 namespace SoftwareFactory.Infrastructure.Persistence.Configurations;
 

@@ -3,12 +3,13 @@ using SoftwareFactory.Application.Common.Interfaces;
 using SoftwareFactory.Domain.Common;
 using SoftwareFactory.Domain.Modules.Categories;
 using SoftwareFactory.Domain.Modules.Content;
-using SoftwareFactory.Domain.Modules.Orders;
+using SoftwareFactory.Domain.Shared.Commerce.Orders;
 using SoftwareFactory.Domain.Modules.Products;
 using SoftwareFactory.Domain.Modules.Reviews;
 using SoftwareFactory.Domain.Modules.Wishlist;
-using CartAggregate = SoftwareFactory.Domain.Modules.Cart.Cart;
-using CartItemEntity = SoftwareFactory.Domain.Modules.Cart.CartItem;
+using SoftwareFactory.Domain.Modules.Restaurant;
+using CartAggregate = SoftwareFactory.Domain.Shared.Commerce.Cart.Cart;
+using CartItemEntity = SoftwareFactory.Domain.Shared.Commerce.Cart.CartItem;
 
 namespace SoftwareFactory.Infrastructure.Persistence;
 
@@ -31,6 +32,12 @@ public sealed class AppDbContext : DbContext, IAppDbContext
     public DbSet<Review> Reviews => Set<Review>();
     public DbSet<WishlistItem> WishlistItems => Set<WishlistItem>();
     public DbSet<ContentBlock> ContentBlocks => Set<ContentBlock>();
+
+    public DbSet<MenuCategory> MenuCategories => Set<MenuCategory>();
+    public DbSet<MenuItem> MenuItems => Set<MenuItem>();
+    public DbSet<Branch> Branches => Set<Branch>();
+    public DbSet<RestaurantTable> RestaurantTables => Set<RestaurantTable>();
+    public DbSet<Reservation> Reservations => Set<Reservation>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

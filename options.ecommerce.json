@@ -1,0 +1,16 @@
+{
+  "$schema": "./options.schema.json",
+  "siteType": "ecommerce",
+  "language": "ar-en",
+  "defaultDirection": "rtl",
+  "payments": ["tamara", "tabi"],
+  "integrations": ["zatca", "whatsapp"],
+  "features": {
+    "clientDashboard": true,
+    "cms": true,
+    "reviews": false,
+    "loyalty": false,
+    "analytics": true
+  },
+  "designDirection": "premium"
+}

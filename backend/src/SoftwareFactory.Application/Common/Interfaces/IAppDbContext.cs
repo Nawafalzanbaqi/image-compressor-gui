@@ -1,12 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using SoftwareFactory.Domain.Modules.Categories;
 using SoftwareFactory.Domain.Modules.Content;
-using SoftwareFactory.Domain.Modules.Orders;
+using SoftwareFactory.Domain.Shared.Commerce.Orders;
 using SoftwareFactory.Domain.Modules.Products;
 using SoftwareFactory.Domain.Modules.Reviews;
 using SoftwareFactory.Domain.Modules.Wishlist;
-using CartAggregate = SoftwareFactory.Domain.Modules.Cart.Cart;
-using CartItemEntity = SoftwareFactory.Domain.Modules.Cart.CartItem;
+using SoftwareFactory.Domain.Modules.Restaurant;
+using CartAggregate = SoftwareFactory.Domain.Shared.Commerce.Cart.Cart;
+using CartItemEntity = SoftwareFactory.Domain.Shared.Commerce.Cart.CartItem;
 
 namespace SoftwareFactory.Application.Common.Interfaces;
 
@@ -25,6 +26,13 @@ public interface IAppDbContext
     DbSet<Review> Reviews { get; }
     DbSet<WishlistItem> WishlistItems { get; }
     DbSet<ContentBlock> ContentBlocks { get; }
+
+    // Restaurant vertical modules.
+    DbSet<MenuCategory> MenuCategories { get; }
+    DbSet<MenuItem> MenuItems { get; }
+    DbSet<Branch> Branches { get; }
+    DbSet<RestaurantTable> RestaurantTables { get; }
+    DbSet<Reservation> Reservations { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

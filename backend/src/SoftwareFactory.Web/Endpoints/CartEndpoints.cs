@@ -1,6 +1,6 @@
 using MediatR;
-using SoftwareFactory.Application.Modules.Cart.Commands.AddCartItem;
-using SoftwareFactory.Application.Modules.Cart.Queries.GetCart;
+using SoftwareFactory.Application.Shared.Commerce.Cart.Commands.AddCartItem;
+using SoftwareFactory.Application.Shared.Commerce.Cart.Queries.GetCart;
 
 namespace SoftwareFactory.Web.Endpoints;
 

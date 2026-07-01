@@ -1,6 +1,6 @@
 using MediatR;
-using SoftwareFactory.Application.Modules.Orders.Commands.PlaceOrder;
-using SoftwareFactory.Application.Modules.Orders.Queries.GetOrderByNumber;
+using SoftwareFactory.Application.Shared.Commerce.Orders.Commands.PlaceOrder;
+using SoftwareFactory.Application.Shared.Commerce.Orders.Queries.GetOrderByNumber;
 
 namespace SoftwareFactory.Web.Endpoints;
 

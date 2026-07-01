@@ -64,21 +64,33 @@ app.UseRateLimiter();
 // ── Health ───────────────────────────────────────────────────────────────────
 app.MapGet("/health", () => Results.Ok(new { status = "healthy" })).WithTags("Health");
 
-// ── Endpoints (config-driven) ────────────────────────────────────────────────
+// ── Endpoints (config-driven by siteType + feature flags) ────────────────────
 var flags = app.Services.GetRequiredService<IFeatureFlags>();
+var siteType = flags.SiteType?.ToLowerInvariant() ?? "ecommerce";
 
-// Reference modules — always on for the ecommerce vertical.
-app.MapProductsEndpoints();
-app.MapCategoriesEndpoints();
+// SHARED/CORE modules — reused by every vertical (cart, checkout/orders, CMS content).
 app.MapCartEndpoints();
 app.MapOrdersEndpoints();
 app.MapContentEndpoints();
 
-// Optional modules — mapped only when their options.json flag is enabled.
-// A disabled feature's endpoints never enter the routing table.
+// VERTICAL-SPECIFIC modules — only the active siteType's endpoints are mapped.
+// The other vertical's routes never enter the routing table (proof: dual-boot test).
+if (siteType == "restaurant")
+{
+    app.MapMenuEndpoints();
+    app.MapBranchesEndpoints();
+    app.MapReservationsEndpoints();
+}
+else // ecommerce (default)
+{
+    app.MapProductsEndpoints();
+    app.MapCategoriesEndpoints();
+}
+
+// Optional feature modules — mapped only when their options.json flag is enabled.
 if (flags.Reviews)
     app.MapReviewsEndpoints();
-// TODO(phase-2): if (flags.Loyalty) app.MapLoyaltyEndpoints();  (wishlist/loyalty modules)
+// TODO(phase-3): if (flags.Loyalty) app.MapLoyaltyEndpoints();
 
 // ── Dev database init + seed (respects feature flags) ────────────────────────
 if (app.Environment.IsDevelopment())
