@@ -87,6 +87,8 @@ jobs:
           cache-dependency-path: frontend/pnpm-lock.yaml
       - name: Install
         run: pnpm install --frozen-lockfile
+      - name: Generate API types from OpenAPI
+        run: pnpm gen:api
       - name: Build
         run: pnpm build
         env:

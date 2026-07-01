@@ -1,5 +1,5 @@
 import { apiFetch, ApiError } from "@/lib/api/client";
-import type { ContentSectionDto } from "@/lib/api/types";
+import type { ContentSectionDto, ContentBlockDto } from "@/lib/api/types";
 import { heroSlides, type HeroSlide } from "@/content/seeds";
 
 /**
@@ -13,12 +13,12 @@ export async function getHeroSlides(): Promise<HeroSlide[]> {
       revalidate: 120,
       tags: ["content:hero"],
     });
-    const blocks = section.blocks ?? [];
+    const blocks: ContentBlockDto[] = section.blocks ?? [];
     if (blocks.length > 0) {
       return blocks
-        .filter((b) => b.visible !== false)
-        .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-        .map((b) => b.data as unknown as HeroSlide);
+        .filter((b: ContentBlockDto) => b.visible !== false)
+        .sort((a: ContentBlockDto, b: ContentBlockDto) => (a.order ?? 0) - (b.order ?? 0))
+        .map((b: ContentBlockDto) => b.data as unknown as HeroSlide);
     }
   } catch (err) {
     if (!(err instanceof ApiError) && !(err instanceof TypeError)) throw err;
