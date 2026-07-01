@@ -1,0 +1,76 @@
+# One command spins up the full local environment:  `docker compose up --build`
+#   postgres  :5432   redis :6379   backend :8080/swagger   frontend :3000
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-factory}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me-in-production}
+      POSTGRES_DB: ${POSTGRES_DB:-factory}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-factory}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis: { condition: service_healthy }
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Development}
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__Postgres: Host=postgres;Port=5432;Database=${POSTGRES_DB:-factory};Username=${POSTGRES_USER:-factory};Password=${POSTGRES_PASSWORD:-change-me-in-production}
+      ConnectionStrings__Redis: redis:6379
+      Cors__AllowedOrigins: http://localhost:3000
+      Factory__OptionsPath: /app/options.json
+    ports:
+      - "8080:8080"
+    # The shared root options.json drives which modules/endpoints register.
+    volumes:
+      - ./options.json:/app/options.json:ro
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      NEXT_PUBLIC_API_BASE_URL: http://localhost:8080
+      NEXT_PUBLIC_SITE_URL: http://localhost:3000
+      API_INTERNAL_URL: http://backend:8080
+      AUTH_SECRET: ${AUTH_SECRET:-change-me-generate-a-32-byte-base64-secret}
+      AUTH_TRUST_HOST: "true"
+      PAYLOAD_SECRET: ${PAYLOAD_SECRET:-change-me-generate-a-long-random-secret}
+      DATABASE_URI: postgres://${POSTGRES_USER:-factory}:${POSTGRES_PASSWORD:-change-me-in-production}@postgres:5432/${POSTGRES_DB:-factory}
+    ports:
+      - "3000:3000"
+    # options.json is also read by the frontend for nav/route gating.
+    volumes:
+      - ./options.json:/app/options.json:ro
+
+volumes:
+  pgdata:

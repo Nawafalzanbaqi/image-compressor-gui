@@ -1,0 +1,98 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["main"]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ── Backend: build + unit tests (Application layer) ──────────────────────────
+  backend:
+    name: Backend (.NET 9)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "9.0.x"
+      - name: Restore
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+      - name: Unit tests
+        run: dotnet test tests/Application.UnitTests --configuration Release --no-build --verbosity normal
+      # Integration tests use Testcontainers (real Postgres) — Docker is available
+      # on ubuntu-latest runners.
+      - name: Integration tests (Testcontainers)
+        run: dotnet test tests/Integration.Tests --configuration Release --no-build --verbosity normal
+
+  # ── Frontend: lint + unit test + build ───────────────────────────────────────
+  frontend:
+    name: Frontend (Next.js 15)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
+      - name: Install
+        run: pnpm install --frozen-lockfile
+      - name: Generate API types from OpenAPI
+        run: pnpm gen:api
+      - name: Lint
+        run: pnpm lint
+      - name: Unit tests (Vitest)
+        run: pnpm test
+      - name: Build
+        run: pnpm build
+        env:
+          AUTH_SECRET: ci-placeholder-secret-ci-placeholder-secret
+          PAYLOAD_SECRET: ci-placeholder-secret
+          NEXT_PUBLIC_API_BASE_URL: http://localhost:8080
+          NEXT_PUBLIC_SITE_URL: http://localhost:3000
+
+  # ── Lighthouse CI: enforce a minimum quality score ───────────────────────────
+  lighthouse:
+    name: Lighthouse CI
+    runs-on: ubuntu-latest
+    needs: frontend
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
+      - name: Install
+        run: pnpm install --frozen-lockfile
+      - name: Build
+        run: pnpm build
+        env:
+          AUTH_SECRET: ci-placeholder-secret-ci-placeholder-secret
+          PAYLOAD_SECRET: ci-placeholder-secret
+          NEXT_PUBLIC_API_BASE_URL: http://localhost:8080
+          NEXT_PUBLIC_SITE_URL: http://localhost:3000
+      - name: Run Lighthouse CI (min score gate in lighthouserc.json)
+        run: pnpm dlx @lhci/cli@0.13.x autorun

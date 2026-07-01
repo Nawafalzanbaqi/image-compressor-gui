@@ -1,0 +1,38 @@
+# ── Secrets ──────────────────────────────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+*.pem
+
+# ── .NET ─────────────────────────────────────────────────────────────────────
+bin/
+obj/
+*.user
+[Bb]uild/
+[Dd]ebug/
+[Rr]elease/
+TestResults/
+*.trx
+.vs/
+
+# ── Node / Next.js ───────────────────────────────────────────────────────────
+node_modules/
+.next/
+out/
+.turbo/
+dist/
+coverage/
+.pnpm-store/
+next-env.d.ts
+playwright-report/
+test-results/
+.payload/
+
+# ── Generated / OpenAPI ──────────────────────────────────────────────────────
+frontend/src/lib/api/generated.ts
+
+# ── OS / editor ──────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.log
+.idea/

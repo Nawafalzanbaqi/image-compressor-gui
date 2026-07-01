@@ -1,0 +1,311 @@
+openapi: 3.0.3
+info:
+  title: Software Factory API
+  version: 1.0.0
+  description: >
+    OpenAPI-first contract for the reusable software-factory backend
+    (e-commerce vertical, Phase 1). This file is the SOURCE OF TRUTH.
+    Frontend types are generated from it via `openapi-typescript`
+    (`pnpm gen:api`). The .NET backend also emits a live Swagger document at
+    /swagger — keep the two in sync when adding endpoints.
+servers:
+  - url: http://localhost:8080
+    description: Local backend
+tags:
+  - name: Products
+  - name: Categories
+  - name: Cart
+  - name: Orders
+  - name: Content
+  - name: Health
+paths:
+  /health:
+    get:
+      tags: [Health]
+      summary: Liveness probe
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: { type: string, example: healthy }
+
+  /api/products:
+    get:
+      tags: [Products]
+      summary: List products (paged, filterable). Cached in Redis.
+      parameters:
+        - { name: page, in: query, schema: { type: integer, default: 1, minimum: 1 } }
+        - { name: pageSize, in: query, schema: { type: integer, default: 20, minimum: 1, maximum: 100 } }
+        - { name: categorySlug, in: query, schema: { type: string } }
+        - { name: search, in: query, schema: { type: string } }
+      responses:
+        '200':
+          description: A page of products
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ProductPage' }
+    post:
+      tags: [Products]
+      summary: Create a product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CreateProductRequest' }
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ProductDto' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+
+  /api/products/{slug}:
+    get:
+      tags: [Products]
+      summary: Get a product by slug
+      parameters:
+        - { name: slug, in: path, required: true, schema: { type: string } }
+      responses:
+        '200':
+          description: The product
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ProductDto' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /api/categories:
+    get:
+      tags: [Categories]
+      summary: List categories
+      responses:
+        '200':
+          description: Categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/CategoryDto' }
+
+  /api/cart/{cartId}:
+    get:
+      tags: [Cart]
+      summary: Get a cart with its items
+      parameters:
+        - { name: cartId, in: path, required: true, schema: { type: string, format: uuid } }
+      responses:
+        '200':
+          description: The cart
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CartDto' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /api/cart/{cartId}/items:
+    post:
+      tags: [Cart]
+      summary: Add an item to the cart
+      parameters:
+        - { name: cartId, in: path, required: true, schema: { type: string, format: uuid } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/AddCartItemRequest' }
+      responses:
+        '200':
+          description: Updated cart
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CartDto' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+
+  /api/orders:
+    post:
+      tags: [Orders]
+      summary: Place an order (checkout)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/PlaceOrderRequest' }
+      responses:
+        '201':
+          description: Order placed
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/OrderDto' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+
+  /api/orders/{orderNumber}:
+    get:
+      tags: [Orders]
+      summary: Track an order by its number
+      parameters:
+        - { name: orderNumber, in: path, required: true, schema: { type: string } }
+      responses:
+        '200':
+          description: The order
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/OrderDto' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /api/content/{section}:
+    get:
+      tags: [Content]
+      summary: >
+        Get editable content for a storefront section (hero, about, contact,
+        footer, faq, banners). Content itself is authored in Payload CMS; this
+        endpoint exposes backend-owned structured content where relevant.
+      parameters:
+        - { name: section, in: path, required: true, schema: { type: string } }
+      responses:
+        '200':
+          description: Section content blocks
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ContentSectionDto' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+components:
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ProblemDetails' }
+    ValidationError:
+      description: Validation failed
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ValidationProblemDetails' }
+  schemas:
+    Money:
+      type: object
+      properties:
+        amount: { type: number, format: double, example: 199.00 }
+        currency: { type: string, example: SAR }
+      required: [amount, currency]
+    ProductDto:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        slug: { type: string }
+        name: { type: string }
+        description: { type: string }
+        price: { $ref: '#/components/schemas/Money' }
+        categorySlug: { type: string }
+        imageUrls: { type: array, items: { type: string } }
+        inStock: { type: boolean }
+        isActive: { type: boolean }
+      required: [id, slug, name, price, inStock]
+    ProductPage:
+      type: object
+      properties:
+        items: { type: array, items: { $ref: '#/components/schemas/ProductDto' } }
+        page: { type: integer }
+        pageSize: { type: integer }
+        totalCount: { type: integer }
+      required: [items, page, pageSize, totalCount]
+    CreateProductRequest:
+      type: object
+      properties:
+        name: { type: string, minLength: 2, maxLength: 200 }
+        description: { type: string, maxLength: 4000 }
+        priceAmount: { type: number, format: double, minimum: 0 }
+        currency: { type: string, default: SAR }
+        categorySlug: { type: string }
+        imageUrls: { type: array, items: { type: string } }
+      required: [name, priceAmount, categorySlug]
+    CategoryDto:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        slug: { type: string }
+        name: { type: string }
+        parentSlug: { type: string, nullable: true }
+        displayOrder: { type: integer }
+      required: [id, slug, name]
+    CartItemDto:
+      type: object
+      properties:
+        productId: { type: string, format: uuid }
+        productName: { type: string }
+        unitPrice: { $ref: '#/components/schemas/Money' }
+        quantity: { type: integer, minimum: 1 }
+        lineTotal: { $ref: '#/components/schemas/Money' }
+      required: [productId, quantity]
+    CartDto:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        items: { type: array, items: { $ref: '#/components/schemas/CartItemDto' } }
+        subtotal: { $ref: '#/components/schemas/Money' }
+        itemCount: { type: integer }
+      required: [id, items]
+    AddCartItemRequest:
+      type: object
+      properties:
+        productId: { type: string, format: uuid }
+        quantity: { type: integer, minimum: 1, default: 1 }
+      required: [productId, quantity]
+    PlaceOrderRequest:
+      type: object
+      properties:
+        cartId: { type: string, format: uuid }
+        customerName: { type: string, minLength: 2 }
+        customerEmail: { type: string, format: email }
+        customerPhone: { type: string }
+        shippingAddress: { type: string, minLength: 5 }
+        paymentMethod: { type: string, example: tamara }
+      required: [cartId, customerName, customerEmail, shippingAddress, paymentMethod]
+    OrderItemDto:
+      type: object
+      properties:
+        productId: { type: string, format: uuid }
+        productName: { type: string }
+        unitPrice: { $ref: '#/components/schemas/Money' }
+        quantity: { type: integer }
+    OrderDto:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        orderNumber: { type: string }
+        status: { type: string, enum: [Pending, Paid, Shipped, Delivered, Cancelled] }
+        items: { type: array, items: { $ref: '#/components/schemas/OrderItemDto' } }
+        total: { $ref: '#/components/schemas/Money' }
+        placedAt: { type: string, format: date-time }
+      required: [id, orderNumber, status, total]
+    ContentBlockDto:
+      type: object
+      properties:
+        key: { type: string }
+        type: { type: string }
+        order: { type: integer }
+        visible: { type: boolean }
+        data: { type: object, additionalProperties: true }
+    ContentSectionDto:
+      type: object
+      properties:
+        section: { type: string }
+        blocks: { type: array, items: { $ref: '#/components/schemas/ContentBlockDto' } }
+    ProblemDetails:
+      type: object
+      properties:
+        type: { type: string }
+        title: { type: string }
+        status: { type: integer }
+        detail: { type: string }
+    ValidationProblemDetails:
+      allOf:
+        - $ref: '#/components/schemas/ProblemDetails'
+        - type: object
+          properties:
+            errors:
+              type: object
+              additionalProperties: { type: array, items: { type: string } }

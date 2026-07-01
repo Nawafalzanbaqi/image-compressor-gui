@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://software-factory.dev/options.schema.json",
+  "title": "Software Factory Build Options",
+  "description": "Configuration-driven build manifest. Read by both backend (.NET startup) and frontend (Next.js build/runtime) to conditionally enable modules, routes, nav items and DB seed data. Features set to false keep their code module but are toggled off (feature-flag pattern, not deleted code).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["siteType", "language", "defaultDirection", "features"],
+  "properties": {
+    "siteType": {
+      "type": "string",
+      "description": "Vertical template. Phase 1 only implements 'ecommerce'.",
+      "enum": [
+        "ecommerce",
+        "corporate",
+        "portfolio",
+        "booking",
+        "lms",
+        "realestate",
+        "restaurant",
+        "healthcare",
+        "marketplace"
+      ]
+    },
+    "language": {
+      "type": "string",
+      "description": "Enabled locales. 'ar' | 'en' | 'ar-en' (both).",
+      "enum": ["ar", "en", "ar-en"]
+    },
+    "defaultDirection": {
+      "type": "string",
+      "enum": ["rtl", "ltr"]
+    },
+    "payments": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["tamara", "tabi", "stripe", "cod", "mada"] }
+    },
+    "integrations": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["zatca", "whatsapp", "ga4", "meta-pixel"] }
+    },
+    "features": {
+      "type": "object",
+      "additionalProperties": { "type": "boolean" },
+      "properties": {
+        "clientDashboard": { "type": "boolean" },
+        "cms": { "type": "boolean" },
+        "reviews": { "type": "boolean" },
+        "loyalty": { "type": "boolean" },
+        "analytics": { "type": "boolean" }
+      }
+    },
+    "designDirection": {
+      "type": "string",
+      "enum": ["premium", "minimal", "playful", "corporate"]
+    }
+  }
+}
