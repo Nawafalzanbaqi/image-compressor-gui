@@ -1,47 +1,72 @@
-# 🖼️ ضاغط الصور | Image Compressor (GUI)
+# Image Compressor
 
-أداة سطح مكتب بواجهة رسومية عربية لضغط الصور دفعة واحدة مع الحفاظ على الجودة — بدون كتابة أي أوامر.
+Batch image compression tools built with Python and [Pillow](https://python-pillow.org/) — available as both a **GUI application** and a **command-line script**. Compress entire folders of images while preserving visual quality, with optional resizing and WebP conversion.
 
-A desktop GUI tool (Arabic interface) for batch-compressing images while preserving quality — no command line needed.
+> The user interface and console output are in Arabic.
 
-![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![Pillow](https://img.shields.io/badge/Pillow-11557C?style=for-the-badge)
+## Features
 
-## ✨ المميزات | Features
+- **Batch processing** — compress every image in a folder (optionally including subfolders, preserving their structure)
+- **Supported formats**: JPG / JPEG / PNG / WebP / TIFF / BMP
+- **Quality control** — adjustable JPEG/WebP quality (default: 85)
+- **Smart resizing** — downscale images larger than a maximum dimension while keeping aspect ratio (default: 2000 px, LANCZOS resampling)
+- **EXIF orientation fix** — phone photos keep their correct rotation
+- **Optional WebP conversion** — convert everything to WebP for maximum savings (GUI)
+- **Savings report** — per-file and total before/after sizes with percentage saved
+- **Safe** — originals are never touched; compressed copies go to a separate output folder
 
-- 📁 ضغط كل صور المجلد دفعة واحدة | Batch-compress an entire folder
-- 🎚️ تحكم في الجودة (10-100) | Adjustable quality (10–100)
-- 📐 تحديد أقصى أبعاد للصورة | Max width/height limit
-- 🔄 تحويل تلقائي إلى WebP | Optional WebP conversion
-- 📂 دعم المجلدات الفرعية | Recursive subfolder support
-- 📱 تصحيح اتجاه صور الجوال (EXIF) | Auto EXIF orientation fix
-- ⚡ معالجة متعددة الخيوط + شريط تقدّم حيّ | Multi-threaded with live progress
-- 🇸🇦 واجهة عربية بالكامل | Fully Arabic interface
+## Requirements
 
-## 🛠️ التقنيات | Tech Stack
+- Python 3.8+
+- Pillow (`pip install -r requirements.txt`)
+- Tkinter for the GUI (bundled with most Python installs; on Debian/Ubuntu: `sudo apt install python3-tk`)
 
-**Python** · **Pillow** · **Tkinter**
+## Usage
 
-## 🚀 التشغيل | Getting Started
+### GUI
 
 ```bash
-# المتطلبات | Requirements
-pip install Pillow
-
-# التشغيل | Run
 python compress_gui.py
 ```
 
-> Tkinter مدمجة مع Python غالباً. على لينكس: `sudo apt install python3-tk`
+Pick an input folder, tweak quality / max size / WebP options, and press start. Progress, per-file results, and total savings are shown live.
 
-## 📖 طريقة الاستخدام | Usage
+### Command line
 
-1. اختر مجلد الصور الأصلية | Select the source folder
-2. اختر مجلد الحفظ | Select the output folder
-3. اضبط الجودة والأبعاد | Adjust quality & dimensions
-4. اضغط "ابدأ الضغط" | Click start
+```bash
+# Simplest form: reads ./images, writes ./compressed
+python compress_images.py
 
----
+# Full control
+python compress_images.py --input photos --output out --quality 80 --max-size 1600 --recursive
+```
 
-Built by **Nawaf Alzanbaqi** — Full-Stack Web Developer
-🌐 [nawaf-alzanbaqi.dev](https://nawaf-alzanbaqi.dev) · 💼 [LinkedIn](https://linkedin.com/in/nawaf-alzanbaqi)
+| Option | Short | Default | Description |
+|---|---|---|---|
+| `--input` | `-i` | `images` | Source folder |
+| `--output` | `-o` | `compressed` | Destination folder |
+| `--quality` | `-q` | `85` | JPEG/WebP quality (1–100) |
+| `--max-size` | `-m` | `2000` | Max width/height in px (`0` = keep dimensions) |
+| `--recursive` | `-r` | off | Process subfolders too |
+
+### Example output
+
+```
+✅ photo1.jpg  |  4.2 MB → 812.3 KB  (81% saved)
+✅ photo2.png  |  2.1 MB → 1.4 MB  (33% saved)
+==================================================
+Processed 2 images successfully, 0 failed.
+Total: 6.3 MB → 2.2 MB — 65% saved
+```
+
+## How it works
+
+- **JPEG**: re-encoded with `optimize=True` and progressive encoding
+- **PNG**: lossless `optimize=True` compression
+- **WebP**: quality-controlled encoding with `method=6` (best compression)
+- **TIFF/BMP**: resized and re-saved as-is
+- Images with transparency are converted to RGB before JPEG encoding
+
+## License
+
+MIT
